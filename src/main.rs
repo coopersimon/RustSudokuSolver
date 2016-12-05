@@ -46,22 +46,29 @@ fn main()
             }
       }
 
-      // fill first row, recursively fill other rows
-      let blank = Vec::new();
-      if !fill_sudoku(&mut sudoku, 0, &blank)
-      {
-            println!("invalid sudoku");
-      }
-      else
+      // run algorithm
+      if fill_sudoku(&mut sudoku)
       {
             print_sudoku(&sudoku);
       }
-      // if returns true, print sudoku
-      // if false, invalid
-
+      else
+      {
+            println!("invalid sudoku");
+      }
 }
 
-fn fill_sudoku(mut sudoku: &mut Vec<u32>, square: usize, row_blanks: &Vec<u32>) -> bool
+fn fill_sudoku(mut sudoku: &mut Vec<u32>) -> bool
+{
+      if sudoku.len() < 81
+      {
+            return false;
+      }
+
+      let blank = Vec::new();
+      fill_square(&mut sudoku, 0, &blank)
+}
+
+fn fill_square(mut sudoku: &mut Vec<u32>, square: usize, row_blanks: &Vec<u32>) -> bool
 {
       // check if we're done.
       if square >= 80
@@ -99,7 +106,7 @@ fn fill_sudoku(mut sudoku: &mut Vec<u32>, square: usize, row_blanks: &Vec<u32>) 
       if sudoku[square] != 0
       {
             // simply check next square.
-            return fill_sudoku(&mut sudoku, square + 1, &input_blanks);
+            return fill_square(&mut sudoku, square + 1, &input_blanks);
       }
 
       // loop until return.
@@ -126,7 +133,7 @@ fn fill_sudoku(mut sudoku: &mut Vec<u32>, square: usize, row_blanks: &Vec<u32>) 
             next_blanks.retain(|&x| x != sudoku[square]);
 
             // rest of row is valid, return true
-            if fill_sudoku(&mut sudoku, square + 1, &next_blanks)
+            if fill_square(&mut sudoku, square + 1, &next_blanks)
             {
                   return true;
             }
