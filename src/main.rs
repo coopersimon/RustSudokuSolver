@@ -71,7 +71,7 @@ fn fill_sudoku(mut sudoku: &mut Vec<u32>) -> bool
 fn fill_square(mut sudoku: &mut Vec<u32>, square: usize, row_blanks: &Vec<u32>) -> bool
 {
       // check if we're done.
-      if square >= 80
+      if square >= 81
       {
             return true;
       }
